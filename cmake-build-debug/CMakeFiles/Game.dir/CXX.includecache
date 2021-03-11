@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/yanlu/CLionProjects/Game/Game.cpp
+iostream
+-
+conio.h
+-
+windows.h
+-
+
+C:/Users/yanlu/CLionProjects/Game/main.cpp
+iostream
+-
+windows.h
+-
+thread
+-
+Game.cpp
+C:/Users/yanlu/CLionProjects/Game/Game.cpp
+

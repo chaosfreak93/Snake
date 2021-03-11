@@ -92,7 +92,7 @@ void Input() {
                     dir = DOWN;
                     break;
                 case 'x':
-                    GameOver();
+                    dir = STOP;
                     break;
             }
         }

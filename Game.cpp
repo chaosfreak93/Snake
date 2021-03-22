@@ -11,8 +11,8 @@ const int height = 20;
 int x, y, fruitX, fruitY, score;
 int tailX[100], tailY[100];
 int nTail;
-enum eDirection { STOP = 0, LEFT, RIGHT, UP, DOWN };
-eDirection dir;
+enum direction { STOP = 0, LEFT, RIGHT, UP, DOWN };
+direction dir;
 
 void Setup() {
     srand((unsigned int) time(0));
@@ -27,7 +27,7 @@ void Setup() {
 
 void GameOver() {
     gameOver = true;
-    Sleep(50);
+    Sleep(75);
     system("cls");
     cout << "Game Over!" << endl;
     cout << "Score: " << score << endl;
@@ -48,7 +48,7 @@ void Draw() {
                 if (i == y && j == x)
                     cout << "O";
                 else if (i == fruitY && j == fruitX)
-                    cout << "F";
+                    cout << "X";
                 else {
                     bool print = false;
                     for (int k = 0; k < nTail; k++) {
@@ -92,7 +92,7 @@ void Input() {
                     dir = DOWN;
                     break;
                 case 'x':
-                    dir = STOP;
+                    GameOver();
                     break;
             }
         }
@@ -156,7 +156,7 @@ void Logic() {
 
         if (x == fruitX && y == fruitY) {
             srand((unsigned int) time(0));
-            score += 10;
+            score += 1;
             fruitX = rand() % width;
             fruitY = rand() % height;
             nTail++;

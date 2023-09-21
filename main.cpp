@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <thread>
 #include <string>
@@ -11,10 +12,13 @@ int main() {
     cout << "Booting up..." << endl;
     Setup();
     cout << "Copyright Yan-Luca L." << endl;
-    cout << "Walls? y/Y (default: false)" << endl;
+    cout << "Walls? y/n (default: n)" << endl;
     cin >> quest;
-    if (quest == "y" || quest == "Y")
+    transform(quest.begin(), quest.end(), quest.begin(), ::tolower );
+    if (quest == "y")
         walls = true;
+    else
+        walls = false;
     cout << "W = Up; A = Left; S = Down; D = Right; X = Game Over; Game start in 1Second" << endl;
     Sleep(1000);
     thread draw_thread([] { return Draw(); });

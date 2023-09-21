@@ -37,7 +37,7 @@ void GameOver() {
 
 void Draw() {
     while (!gameOver) {
-        system("cls");
+        if (system("cls")) system("clear");
         for (int i = 0; i  < width + 2; i++)
             cout << "#";
         cout << endl;
@@ -73,7 +73,7 @@ void Draw() {
             cout << "#";
         cout << endl;
         cout << "Score: " << score << endl;
-        cout << "Copyright Yan-Luca L." << endl;
+        cout << "Copyright Yan-Luca L." << flush;
     }
 }
 

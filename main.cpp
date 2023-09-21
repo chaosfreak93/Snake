@@ -7,6 +7,7 @@ using namespace std;
 
 int main() {
     string quest;
+    cout.setf(ios::unitbuf);
     cout << "Booting up..." << endl;
     Setup();
     cout << "Copyright Yan-Luca L." << endl;

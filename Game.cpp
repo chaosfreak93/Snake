@@ -1,16 +1,18 @@
 #include <iostream>
 #include <conio.h>
 #include <windows.h>
+#include "Snake.cpp"
+#include "Fruit.cpp"
 
 using namespace std;
 
 bool walls = false;
 bool gameOver;
-const int width = 20;
+const int width = 40;
 const int height = 20;
-int x, y, fruitX, fruitY, score;
-int tailX[100], tailY[100];
-int nTail;
+Snake snake;
+Fruit fruit;
+int score;
 enum direction { STOP = 0, LEFT, RIGHT, UP, DOWN };
 direction dir;
 
@@ -18,10 +20,10 @@ void Setup() {
     srand((unsigned int) time(0));
     gameOver = false;
     dir = STOP;
-    x = width / 2;
-    y = height / 2;
-    fruitX = rand() % width;
-    fruitY = rand() % height;
+    snake.setX(width / 2);
+    snake.setY(height / 2);
+    fruit.setX(rand() % width);
+    fruit.setY(rand() % height);
     score = 0;
 }
 
@@ -45,14 +47,14 @@ void Draw() {
                 if (j == 0)
                     cout << "#";
 
-                if (i == y && j == x)
+                if (i == snake.getY() && j == snake.getX())
                     cout << "O";
-                else if (i == fruitY && j == fruitX)
+                else if (i == fruit.getY() && j == fruit.getX())
                     cout << "X";
                 else {
                     bool print = false;
-                    for (int k = 0; k < nTail; k++) {
-                        if (tailX[k] == j && tailY[k] == i) {
+                    for (int k = 0; k < snake.getTailLength(); k++) {
+                        if (snake.tail[k].getX() == j && snake.tail[k].getY() == i) {
                             cout << "o";
                             print = true;
                         }
@@ -101,65 +103,65 @@ void Input() {
 
 void Logic() {
     while (!gameOver) {
-        int prevX = tailX[0];
-        int prevY = tailY[0];
+        int prevX = snake.tail[0].getX();
+        int prevY = snake.tail[0].getY();
         int prev2X, prev2Y;
-        tailX[0] = x;
-        tailY[0] = y;
-        for (int i = 1; i < nTail; i++) {
-            prev2X = tailX[i];
-            prev2Y = tailY[i];
-            tailX[i] = prevX;
-            tailY[i] = prevY;
+        snake.tail[0].setX(snake.getX());
+        snake.tail[0].setY(snake.getY());
+        for (int i = 1; i < snake.getTailLength(); i++) {
+            prev2X = snake.tail[i].getX();
+            prev2Y = snake.tail[i].getY();
+            snake.tail[i].setX(prevX);
+            snake.tail[i].setY(prevY);
             prevX = prev2X;
             prevY = prev2Y;
         }
         switch (dir) {
             case LEFT:
-                x--;
+                snake.setX(snake.getX() - 1);
                 Sleep(150);
                 break;
             case RIGHT:
-                x++;
+                snake.setX(snake.getX() + 1);
                 Sleep(150);
                 break;
             case UP:
-                y--;
-                Sleep(150);
+                snake.setY(snake.getY() - 1);
+                Sleep(250);
                 break;
             case DOWN:
-                y++;
-                Sleep(150);
+                snake.setY(snake.getY() + 1);
+                Sleep(250);
                 break;
             default:
                 break;
         }
-        if (x > width || x < 0 || y > height || y < 0) {
+        if (snake.getX() > width || snake.getX() < 0 || snake.getY() > height || snake.getY() < 0) {
             if (walls) {
                 GameOver();
             } else {
-                if (x >= width)
-                    x = 0;
-                else if (x < 0)
-                    x = width - 1;
+                if (snake.getX() >= width)
+                    snake.setX(0);
+                else if (snake.getX() < 0)
+                    snake.setX(width - 1);
 
-                if (y >= height)
-                    y = 0;
-                else if (y < 0)
-                    y = height - 1;
+                if (snake.getY() >= height)
+                    snake.setY(0);
+                else if (snake.getY() < 0)
+                    snake.setY(height - 1);
             }
         }
 
-        for (int i = 0; i < nTail; i++)
-            if(tailX[i] == x && tailY[i] == y)
+        for (int i = 0; i < snake.getTailLength(); i++)
+            if(snake.tail[i].getX() == snake.getX() && snake.tail[i].getY() == snake.getY())
                 GameOver();
 
-        if (x == fruitX && y == fruitY) {
+        if (snake.getX() == fruit.getX() && snake.getY() == fruit.getY()) {
             srand((unsigned int) time(0));
             score += 1;
-            fruitX = rand() % width;
-            fruitY = rand() % height;
-            nTail++;
+            fruit.setX(rand() % width);
+            fruit.setY(rand() % height);
+            snake.setTailLength(snake.getTailLength() + 1);
         }
     }
 }
